@@ -54,3 +54,41 @@ This PL/SQL-based system aims to **automate and optimize** these operations.
 PASSENGER (Passenger_ID, Name, Passport_No, Contact_Info)
 FLIGHT (Flight_ID, Departure_City, Arrival_City, DateTime)
 BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
+
+#  Phase 2: Business Process Modeling  
+
+---
+
+## BPMN Model Overview  
+**Process:** Flight Booking and Ticket Management  
+**Tool Used:** BPMN 2.0 (via draw.io/Lucidchart)
+![ERD](https://github.com/user-attachments/assets/daaf2fb6-4d12-49b4-8727-eec1efbe5c06)
+]  
+
+### Key Objectives  
+✅ Automate booking workflows to **reduce errors**  
+✅ Enable **real-time data synchronization** across departments  
+✅ Optimize resource allocation (crew, aircraft)  
+
+---
+
+## Core Entities & Responsibilities  
+| Entity | Role |  
+|--------|------|  
+| **Passenger** | Initiates bookings, makes payments |  
+| **Booking System** | Processes reservations, generates tickets |  
+| **Payment Gateway** | Secures transactions, validates payments |  
+| **Airline Staff** | Manages exceptions/customer support |  
+| **Database (PL/SQL)** | Central data repository for all operations |  
+
+---
+
+## Swimlane Structure  
+```plaintext
+1. Passenger → Searches flights → Selects option → Pays  
+2. Booking System → Checks availability → Registers booking → Issues ticket  
+3. Payment Gateway → Processes payment → Confirms status  
+4. Airline Staff → Handles exceptions (e.g., overbooking)
+
+![ diagram](https://github.com/user-attachments/assets/10c433f2-23c6-47f6-91c5-c4cfa630dbcc)
+
