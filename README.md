@@ -53,11 +53,12 @@ This PL/SQL-based system aims to **automate and optimize** these operations.
 -- Core Tables:
 PASSENGER (Passenger_ID, Name, Passport_No, Contact_Info)
 FLIGHT (Flight_ID, Departure_City, Arrival_City, DateTime)
-BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
+BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 
 ---
 
-# Phase 2: Business Process Modeling
+
+# Business Process Modeling
  
 
 ---
