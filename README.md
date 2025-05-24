@@ -57,7 +57,7 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
 
 ---
 
-#  Phase 2: Business Process Modeling  
+## Phase 2: Business Process Modeling  
 
 ---
 
@@ -96,7 +96,7 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
 ![ diagram](https://github.com/user-attachments/assets/10c433f2-23c6-47f6-91c5-c4cfa630dbcc)
 ---
 
-# Phase 3: Logical Model Design  
+### Phase 3: Logical Model Design  
 
 ---
 
