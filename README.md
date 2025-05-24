@@ -1083,9 +1083,7 @@ BEGIN
     audit_management_pkg.purge_audit_records(90);
 END;
 /
-
-### THANK YOU!
     analyze_booking_trends();
 END;
 /
-
+### THANK YOU!
