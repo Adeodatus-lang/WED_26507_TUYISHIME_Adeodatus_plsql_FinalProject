@@ -55,6 +55,8 @@ PASSENGER (Passenger_ID, Name, Passport_No, Contact_Info)
 FLIGHT (Flight_ID, Departure_City, Arrival_City, DateTime)
 BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
 
+---
+
 #  Phase 2: Business Process Modeling  
 
 ---
@@ -89,8 +91,10 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status)
 2. Booking System → Checks availability → Registers booking → Issues ticket  
 3. Payment Gateway → Processes payment → Confirms status  
 4. Airline Staff → Handles exceptions (e.g., overbooking)
+---
 
 ![ diagram](https://github.com/user-attachments/assets/10c433f2-23c6-47f6-91c5-c4cfa630dbcc)
+---
 
 # Phase 3: Logical Model Design  
 
@@ -126,6 +130,8 @@ BOOKING (
   Seat_No,
   Ticket_Status CHECK ('Confirmed', 'Pending', 'Cancelled')
 );
+---
+
 ## phase 4 
 
 ---
@@ -148,7 +154,12 @@ QUOTA UNLIMITED ON users;
 -- Grant necessary privileges
 GRANT CONNECT, RESOURCE, DBA TO rwandair_admin;
 GRANT CREATE SESSION, CREATE VIEW, CREATE PROCEDURE TO rwandair_admin;
+
+---
+
 # Phase 5
+
+---
 -- Passenger Table
 CREATE TABLE Passenger (
     Passenger_ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
