@@ -141,21 +141,9 @@ BOOKING (
 ## Database Setup  
 ### 1. PDB Creation  
 sql
--- Create pluggable database with AUCA naming convention
-CREATE PLUGGABLE DATABASE mon_26507_adeodatus_rwandair_db
-ADMIN USER admin IDENTIFIED BY Adeodatus
-FILE_NAME_CONVERT=('/opt/oracle/oradata/pdbseed/', '/opt/oracle/oradata/mon_26507_adeodatus_rwandair_db/');
+![creation of pluggable database](https://github.com/user-attachments/assets/e384a6c0-572e-490b-ba90-78c2a3e10d78)
+![OEM ](https://github.com/user-attachments/assets/30422341-94aa-428f-b065-839407374145)
 
--- Open PDB
-ALTER PLUGGABLE DATABASE mon_26507_adeodatus_rwandair_db OPEN;
--- Create project-specific user with super admin rights
-CREATE USER rwandair_admin IDENTIFIED BY Adeodatus
-DEFAULT TABLESPACE users
-QUOTA UNLIMITED ON users;
-
--- Grant necessary privileges
-GRANT CONNECT, RESOURCE, DBA TO rwandair_admin;
-GRANT CREATE SESSION, CREATE VIEW, CREATE PROCEDURE TO rwandair_admin;
 
 ---
 
