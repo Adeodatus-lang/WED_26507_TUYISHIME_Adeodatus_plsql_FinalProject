@@ -66,7 +66,7 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 ## BPMN Model Overview  
 **Process:** Flight Booking and Ticket Management  
 **Tool Used:** BPMN 2.0 (via draw.io/Lucidchart)
-![ERD](https://github.com/user-attachments/assets/daaf2fb6-4d12-49b4-8727-eec1efbe5c06)
+![ diagram](https://github.com/user-attachments/assets/10c433f2-23c6-47f6-91c5-c4cfa630dbcc)
 ]  
 
 ### Key Objectives  
@@ -87,15 +87,10 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 
 ---
 
-## Swimlane Structure  
-plaintext
-1. Passenger → Searches flights → Selects option → Pays  
-2. Booking System → Checks availability → Registers booking → Issues ticket  
-3. Payment Gateway → Processes payment → Confirms status  
-4. Airline Staff → Handles exceptions (e.g., overbooking)
+## ERD
 ---
+![ERD](https://github.com/user-attachments/assets/daaf2fb6-4d12-49b4-8727-eec1efbe5c06)
 
-![ diagram](https://github.com/user-attachments/assets/10c433f2-23c6-47f6-91c5-c4cfa630dbcc)
 ---
 
 # Phase 3: Logical Model Design  
@@ -103,7 +98,7 @@ sql
 ---
 
 ## ER Model Overview  
-![ER Diagram](phase3_er_diagram.png) *Simplified visualization of core entities*
+*Simplified visualization of core entities*
 
 ### Core Entities & Attributes  
 sql
