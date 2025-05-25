@@ -49,7 +49,7 @@ This PL/SQL-based system aims to **automate and optimize** these operations.
 ---
 
 ## Database Entities (Proposed)  
-```sql
+sql
 -- Core Tables:
 PASSENGER (Passenger_ID, Name, Passport_No, Contact_Info)
 FLIGHT (Flight_ID, Departure_City, Arrival_City, DateTime)
@@ -58,7 +58,7 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 ---
 
 
-# Business Process Modeling
+## Business Process Modeling
  
 
 ---
@@ -88,7 +88,7 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 ---
 
 ## Swimlane Structure  
-```plaintext
+plaintext
 1. Passenger → Searches flights → Selects option → Pays  
 2. Booking System → Checks availability → Registers booking → Issues ticket  
 3. Payment Gateway → Processes payment → Confirms status  
@@ -99,14 +99,14 @@ BOOKING (Booking_ID, Passenger_ID, Flight_ID, Seat_No, Status
 ---
 
 # Phase 3: Logical Model Design  
-```sql
+sql
 ---
 
 ## ER Model Overview  
 ![ER Diagram](phase3_er_diagram.png) *Simplified visualization of core entities*
 
 ### Core Entities & Attributes  
-```sql
+sql
 -- 3NF-Compliant Tables
 PASSENGER (
   Passenger_ID PK,
@@ -140,7 +140,7 @@ BOOKING (
 
 ## Database Setup  
 ### 1. PDB Creation  
-```sql
+sql
 -- Create pluggable database with AUCA naming convention
 CREATE PLUGGABLE DATABASE mon_26507_adeodatus_rwandair_db
 ADMIN USER admin IDENTIFIED BY Adeodatus
@@ -193,9 +193,9 @@ CREATE TABLE Booking (
         FOREIGN KEY (Passenger_ID) REFERENCES Passenger(Passenger_ID)
         ON DELETE CASCADE,
 
-    CONSTRAINT fk_booking_flight
-        FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID)
-        ON DELETE CASCADE
+   CONSTRAINT fk_booking_flight
+   FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID)
+   ON DELETE CASCADE
 );
 
 -- Payment Table
@@ -206,9 +206,9 @@ CREATE TABLE Payment (
     Payment_Status VARCHAR2(20) CHECK (Payment_Status IN ('Paid', 'Refunded', 'Pending')) DEFAULT 'Pending',
     Date_Paid DATE DEFAULT SYSDATE,
 
-    CONSTRAINT fk_payment_booking
-        FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
-        ON DELETE CASCADE
+   CONSTRAINT fk_payment_booking
+   FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+   ON DELETE CASCADE
 );
 
 -- Crew Table
@@ -218,9 +218,9 @@ CREATE TABLE Crew (
     Role VARCHAR2(50) CHECK (Role IN ('Pilot', 'Co-Pilot', 'Flight Attendant', 'Engineer')) NOT NULL,
     Assigned_Flight_ID NUMBER,
 
-    CONSTRAINT fk_crew_flight
-        FOREIGN KEY (Assigned_Flight_ID) REFERENCES Flight(Flight_ID)
-        ON DELETE SET NULL
+   CONSTRAINT fk_crew_flight
+   FOREIGN KEY (Assigned_Flight_ID) REFERENCES Flight(Flight_ID)
+   ON DELETE SET NULL
 );
 
 -- 🇷🇼 **Passenger Table Inserts**
@@ -344,8 +344,8 @@ BEGIN
         Date_Paid = CASE WHEN p_payment_status = 'Paid' THEN SYSDATE ELSE Date_Paid END
     WHERE Booking_ID = p_booking_id;
     
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE('Payment status updated successfully');
+   COMMIT;
+   DBMS_OUTPUT.PUT_LINE('Payment status updated successfully');
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
@@ -366,7 +366,7 @@ BEGIN
         SELECT * FROM Passenger
         WHERE Passenger_ID = p_passenger_id;
     
-    RETURN passenger_cursor;
+RETURN passenger_cursor;
 END get_passenger_details;
 /
 
@@ -382,7 +382,7 @@ BEGIN
     FROM Booking
     WHERE Ticket_Status = p_status;
     
-    RETURN v_count;
+  RETURN v_count;
 END count_bookings_by_status;
 /
 
@@ -397,7 +397,7 @@ BEGIN
     FROM Payment
     WHERE Payment_Status = 'Paid';
     
-    RETURN NVL(v_total, 0);
+ RETURN NVL(v_total, 0);
 END calculate_total_revenue;
 /
 
@@ -413,23 +413,23 @@ CREATE OR REPLACE PACKAGE flight_management_pkg AS
         p_aircraft_id IN VARCHAR2
     );
     
-    -- Function to get available seats for a flight
+   -- Function to get available seats for a flight
     FUNCTION get_available_seats(
         p_flight_id IN NUMBER
     ) RETURN SYS_REFCURSOR;
     
-    -- Procedure to assign crew to flight
+   -- Procedure to assign crew to flight
     PROCEDURE assign_crew_to_flight(
         p_crew_id IN NUMBER,
         p_flight_id IN NUMBER
     );
     
-    -- Function to get flight details with crew
+   -- Function to get flight details with crew
     FUNCTION get_flight_details_with_crew(
         p_flight_id IN NUMBER
     ) RETURN SYS_REFCURSOR;
     
-    -- Procedure to cancel booking with refund
+   -- Procedure to cancel booking with refund
     PROCEDURE cancel_booking_with_refund(
         p_booking_id IN NUMBER
     );
@@ -448,7 +448,7 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
         INSERT INTO Flight (Departure, Arrival, Flight_Date, Flight_Time, Aircraft_ID)
         VALUES (p_departure, p_arrival, p_flight_date, p_flight_time, p_aircraft_id);
         
-        COMMIT;
+   COMMIT;
         DBMS_OUTPUT.PUT_LINE('Flight added successfully');
     EXCEPTION
         WHEN OTHERS THEN
@@ -456,7 +456,7 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
             DBMS_OUTPUT.PUT_LINE('Error adding flight: ' || SQLERRM);
     END add_flight;
     
-    FUNCTION get_available_seats(
+   FUNCTION get_available_seats(
         p_flight_id IN NUMBER
     ) RETURN SYS_REFCURSOR
     AS
@@ -467,10 +467,10 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
             SELECT Seat_No FROM Booking
             WHERE Flight_ID = p_flight_id;
             
-        RETURN seats_cursor;
+   RETURN seats_cursor;
     END get_available_seats;
     
-    PROCEDURE assign_crew_to_flight(
+   PROCEDURE assign_crew_to_flight(
         p_crew_id IN NUMBER,
         p_flight_id IN NUMBER
     ) AS
@@ -479,15 +479,15 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
         SET Assigned_Flight_ID = p_flight_id
         WHERE Crew_ID = p_crew_id;
         
-        COMMIT;
-        DBMS_OUTPUT.PUT_LINE('Crew assigned to flight successfully');
+   COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Crew assigned to flight successfully');
     EXCEPTION
         WHEN OTHERS THEN
             ROLLBACK;
             DBMS_OUTPUT.PUT_LINE('Error assigning crew: ' || SQLERRM);
     END assign_crew_to_flight;
     
-    FUNCTION get_flight_details_with_crew(
+   FUNCTION get_flight_details_with_crew(
         p_flight_id IN NUMBER
     ) RETURN SYS_REFCURSOR
     AS
@@ -499,10 +499,10 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
             LEFT JOIN Crew c ON f.Flight_ID = c.Assigned_Flight_ID
             WHERE f.Flight_ID = p_flight_id;
             
-        RETURN flight_cursor;
+   RETURN flight_cursor;
     END get_flight_details_with_crew;
     
-    PROCEDURE cancel_booking_with_refund(
+   PROCEDURE cancel_booking_with_refund(
         p_booking_id IN NUMBER
     ) AS
         v_payment_status VARCHAR2(20);
@@ -514,24 +514,24 @@ CREATE OR REPLACE PACKAGE BODY flight_management_pkg AS
         FROM Payment
         WHERE Booking_ID = p_booking_id;
         
-        -- Update booking status
+   -- Update booking status
         UPDATE Booking
         SET Ticket_Status = 'Cancelled'
         WHERE Booking_ID = p_booking_id;
-        
-        -- Process refund if paid
+       
+   -- Process refund if paid
         IF v_payment_status = 'Paid' THEN
             UPDATE Payment
             SET Payment_Status = 'Refunded',
                 Date_Paid = SYSDATE
             WHERE Booking_ID = p_booking_id;
-            
-            DBMS_OUTPUT.PUT_LINE('Booking cancelled and amount ' || v_amount || ' refunded');
+           
+   DBMS_OUTPUT.PUT_LINE('Booking cancelled and amount ' || v_amount || ' refunded');
         ELSE
             DBMS_OUTPUT.PUT_LINE('Booking cancelled (no refund processed)');
         END IF;
         
-        COMMIT;
+   COMMIT;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
             ROLLBACK;
@@ -552,7 +552,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Booking Trends Analysis:');
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
     
-    FOR trend_rec IN (
+   FOR trend_rec IN (
         SELECT 
             Flight_ID,
             COUNT(*) AS total_bookings,
@@ -630,10 +630,10 @@ BEGIN
     -- Add a new flight
     flight_management_pkg.add_flight('Kigali', 'Brussels', TO_DATE('2025-06-20', 'YYYY-MM-DD'), '08:00', 'RWB787');
     
-    -- Assign crew to flight
+   -- Assign crew to flight
     flight_management_pkg.assign_crew_to_flight(1, 11);
     
-    -- Cancel a booking with refund
+   -- Cancel a booking with refund
     flight_management_pkg.cancel_booking_with_refund(1);
 END;
 /
@@ -686,14 +686,14 @@ BEGIN
     -- Get day of week (Sunday = 1, Saturday = 7)
     v_day_of_week := TO_CHAR(SYSDATE, 'D');
     
-    -- Check if today is a holiday in the upcoming month
+   -- Check if today is a holiday in the upcoming month
     SELECT COUNT(*)
     INTO v_is_holiday
     FROM Holiday
     WHERE Holiday_Date = TRUNC(SYSDATE)
     AND Holiday_Date BETWEEN TRUNC(SYSDATE) AND ADD_MONTHS(TRUNC(SYSDATE), 1);
     
-    -- Check if today is a weekday (Monday to Friday) or holiday
+   -- Check if today is a weekday (Monday to Friday) or holiday
     IF (v_day_of_week BETWEEN '2' AND '6') OR v_is_holiday > 0 THEN
         -- Prepare error message
         IF v_is_holiday > 0 THEN
@@ -706,7 +706,7 @@ BEGIN
             v_error_message := 'Today is a weekday (Monday to Friday)';
         END IF;
         
-        -- Log the attempt
+   -- Log the attempt
         INSERT INTO Booking_Audit (
             Username, 
             Table_Name, 
@@ -728,12 +728,12 @@ BEGIN
         );
         COMMIT;
         
-        -- Raise application error
+   -- Raise application error
         RAISE_APPLICATION_ERROR(-20001, 
             'Data manipulation not allowed on weekdays or holidays. ' || v_error_message);
     END IF;
     
-    -- Log successful operations if not restricted
+   -- Log successful operations if not restricted
     IF (v_day_of_week NOT BETWEEN '2' AND '6') AND v_is_holiday = 0 THEN
         INSERT INTO Booking_Audit (
             Username, 
@@ -801,7 +801,7 @@ BEGIN
         v_record_id := :OLD.Payment_ID;
     END IF;
     
-    -- Log the operation
+   -- Log the operation
     INSERT INTO Booking_Audit (
         Username,
         Table_Name,
@@ -866,10 +866,10 @@ CREATE OR REPLACE PACKAGE audit_management_pkg AS
         p_status IN VARCHAR2 DEFAULT NULL
     );
     
-    -- Function to check if operation is allowed
+   -- Function to check if operation is allowed
     FUNCTION is_operation_allowed RETURN BOOLEAN;
     
-    -- Procedure to purge old audit records
+   -- Procedure to purge old audit records
     PROCEDURE purge_audit_records(
         p_older_than_days IN NUMBER DEFAULT 90
     );
@@ -893,7 +893,7 @@ CREATE OR REPLACE PACKAGE BODY audit_management_pkg AS
         DBMS_OUTPUT.PUT_LINE('Status: ' || NVL(p_status, 'ALL'));
         DBMS_OUTPUT.PUT_LINE(RPAD('-', 100, '-'));
         
-        FOR audit_rec IN (
+   FOR audit_rec IN (
             SELECT 
                 Username,
                 Table_Name,
@@ -923,25 +923,25 @@ CREATE OR REPLACE PACKAGE BODY audit_management_pkg AS
         END LOOP;
     END generate_audit_report;
     
-    FUNCTION is_operation_allowed RETURN BOOLEAN IS
+   FUNCTION is_operation_allowed RETURN BOOLEAN IS
         v_is_holiday NUMBER;
         v_day_of_week VARCHAR2(20);
     BEGIN
         -- Get day of week (Sunday = 1, Saturday = 7)
         v_day_of_week := TO_CHAR(SYSDATE, 'D');
         
-        -- Check if today is a holiday in the upcoming month
+   -- Check if today is a holiday in the upcoming month
         SELECT COUNT(*)
         INTO v_is_holiday
         FROM Holiday
         WHERE Holiday_Date = TRUNC(SYSDATE)
         AND Holiday_Date BETWEEN TRUNC(SYSDATE) AND ADD_MONTHS(TRUNC(SYSDATE), 1);
         
-        -- Return TRUE if it's weekend and not holiday
+   -- Return TRUE if it's weekend and not holiday
         RETURN (v_day_of_week NOT BETWEEN '2' AND '6') AND v_is_holiday = 0;
     END is_operation_allowed;
     
-    PROCEDURE purge_audit_records(
+   PROCEDURE purge_audit_records(
         p_older_than_days IN NUMBER DEFAULT 90
     ) AS
         v_count NUMBER;
@@ -951,15 +951,15 @@ CREATE OR REPLACE PACKAGE BODY audit_management_pkg AS
         FROM Booking_Audit
         WHERE Action_Date < TRUNC(SYSDATE) - p_older_than_days;
         
-        DELETE FROM Booking_Audit
+   DELETE FROM Booking_Audit
         WHERE Action_Date < TRUNC(SYSDATE) - p_older_than_days;
+       
+   COMMIT;
         
-        COMMIT;
-        
-        DBMS_OUTPUT.PUT_LINE('Purged ' || v_count || ' audit records older than ' || 
+   DBMS_OUTPUT.PUT_LINE('Purged ' || v_count || ' audit records older than ' || 
                             p_older_than_days || ' days');
         
-        -- Log the purge operation
+   -- Log the purge operation
         INSERT INTO Booking_Audit (
             Username,
             Table_Name,
@@ -1015,7 +1015,7 @@ BEGIN
         Date_Paid = SYSDATE
     WHERE Booking_ID = 2;
     
-    COMMIT;
+COMMIT;
 END;
 /
 
@@ -1041,9 +1041,9 @@ BEGIN
     INSERT INTO Holiday (Holiday_Name, Holiday_Date, Description)
     VALUES ('Test Holiday', TRUNC(SYSDATE), 'Testing holiday restriction');
     
-    COMMIT;
+ COMMIT;
     
-    -- Now try to insert a booking (should fail)
+ -- Now try to insert a booking (should fail)
     BEGIN
         INSERT INTO Booking (Passenger_ID, Flight_ID, Seat_No, Ticket_Status)
         VALUES (1, 1, '99Z', 'Pending');
@@ -1052,7 +1052,7 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('Expected error: ' || SQLERRM);
     END;
     
-    -- Cleanup
+   -- Cleanup
     DELETE FROM Holiday WHERE Holiday_Date = TRUNC(SYSDATE);
     COMMIT;
 END;
@@ -1077,10 +1077,10 @@ BEGIN
         SYSDATE - 100
     );
     
-    COMMIT;
+   COMMIT;
     
-    -- Purge records older than 90 days
-    audit_management_pkg.purge_audit_records(90);
+  -- Purge records older than 90 days
+  audit_management_pkg.purge_audit_records(90);
 END;
 /
     analyze_booking_trends();
